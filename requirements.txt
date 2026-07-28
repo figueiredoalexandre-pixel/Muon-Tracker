@@ -4,3 +4,4 @@ sqlalchemy
 anthropic
 requests
 beautifulsoup4
+python-dotenv

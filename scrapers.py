@@ -2,13 +2,13 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import streamlit as st
-import google.generativeai as genai
+from google import genai
 from datetime import datetime
 from database import SessionLocal, ArticleEvent
 
-# Initialize the Gemini client securely using Streamlit Secrets or environment variables
+# Initialize the new Gemini client securely
 api_key = st.secrets.get("GEMINI_API_KEY", os.environ.get("GEMINI_API_KEY"))
-genai.configure(api_key=api_key)
+client = genai.Client(api_key=api_key)
 
 def fetch_competitor_news(url):
     """
@@ -45,11 +45,11 @@ def analyze_intelligence(text_content, competitor_name):
     )
 
     try:
-        # Initialize the fast, free tier model
-        model = genai.GenerativeModel('gemini-1.5-flash')
-        
-        # Call the model
-        response = model.generate_content(prompt)
+        # Call the model using the updated 2.5 flash version
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt
+        )
         return response.text
         
     except Exception as e:

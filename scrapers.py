@@ -2,14 +2,13 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import streamlit as st
-from anthropic import Anthropic
+import google.generativeai as genai
 from datetime import datetime
 from database import SessionLocal, ArticleEvent
 
-# Initialize the Anthropic client securely using Streamlit Secrets
-anthropic_client = Anthropic(
-    api_key=st.secrets.get("ANTHROPIC_API_KEY", os.environ.get("ANTHROPIC_API_KEY"))
-)
+# Initialize the Gemini client securely using Streamlit Secrets or environment variables
+api_key = st.secrets.get("GEMINI_API_KEY", os.environ.get("GEMINI_API_KEY"))
+genai.configure(api_key=api_key)
 
 def fetch_competitor_news(url):
     """
@@ -35,7 +34,7 @@ def fetch_competitor_news(url):
 
 def analyze_intelligence(text_content, competitor_name):
     """
-    Passes the scraped text to Claude for analysis and summarization.
+    Passes the scraped text to Gemini for analysis and summarization.
     """
     prompt = (
         f"You are an intelligence analyst for Muon Solutions. "
@@ -46,17 +45,15 @@ def analyze_intelligence(text_content, competitor_name):
     )
 
     try:
-        response = anthropic_client.messages.create(
-            model="claude-3-haiku-20240307", 
-            max_tokens=500,
-            temperature=0.2,
-            messages=[
-                {"role": "user", "content": prompt}
-            ]
-        )
-        return response.content[0].text
+        # Initialize the fast, free tier model
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        
+        # Call the model
+        response = model.generate_content(prompt)
+        return response.text
+        
     except Exception as e:
-        print(f"Anthropic API Error: {e}")
+        print(f"Gemini API Error: {e}")
         return "Analysis failed due to API error."
 
 def main():

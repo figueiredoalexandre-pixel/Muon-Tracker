@@ -83,14 +83,20 @@ def main():
             
             analysis_result = analyze_intelligence(raw_text, competitor)
             
-          # 3. Save the results to the database
-            new_event = ArticleEvent(
-                competitor=competitor,
-                url=url,
-                executive_summary=analysis_result,
-            )
+            # 3. Save or update the results in the database
+            existing_event = db.query(ArticleEvent).filter(ArticleEvent.url == url).first()
             
-            db.add(new_event)
+            if existing_event:
+                print(f"Updating existing record for {competitor}...")
+                existing_event.executive_summary = analysis_result
+            else:
+                print(f"Creating new record for {competitor}...")
+                new_event = ArticleEvent(
+                    competitor=competitor,
+                    url=url,
+                    executive_summary=analysis_result,
+                )
+                db.add(new_event)
         
         db.commit()
         print("Database successfully updated with latest intelligence.")

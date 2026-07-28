@@ -1,8 +1,10 @@
 import streamlit as st
 import pandas as pd
-import subprocess
-import sys
 from database import SessionLocal, ArticleEvent, Base, engine
+
+# 1. Import your scraping function directly from the file
+# Note: This assumes your scraping logic is inside a function named 'main'
+from scrapers import main as run_scraper 
 
 st.set_page_config(page_title="Muon Solutions | Competitor Intel", layout="wide")
 st.title("Muon Solutions: Competitor Tracking Dashboard")
@@ -11,25 +13,15 @@ st.title("Muon Solutions: Competitor Tracking Dashboard")
 with st.sidebar:
     st.header("Admin Controls")
     if st.button("Fetch Latest Intelligence"):
-        with st.spinner("Scraping latest news and running LLM analysis. This may take a moment..."):
-            # Capture output and errors instead of letting them hide in the background
-            result = subprocess.run(
-                [sys.executable, "scrapers.py"], 
-                capture_output=True, 
-                text=True
-            )
-            
-            if result.returncode == 0:
+        with st.spinner("Scraping latest news and running LLM analysis..."):
+            try:
+                # 2. Run the function natively instead of using subprocess
+                run_scraper()
                 st.success("Scraping complete!")
-                # Show exactly what the scraper was doing
-                with st.expander("View Scraper Logs"):
-                    st.code(result.stdout)
                 st.rerun() 
-            else:
-                st.error("The scraper encountered an issue.")
-                # Show the exact error trace so we can debug it
-                with st.expander("View Error Details"):
-                    st.code(result.stderr)
+            except Exception as e:
+                # This will catch and display ANY python error natively
+                st.error(f"An error occurred: {e}")
 
 # --- Main Dashboard ---
 Base.metadata.create_all(bind=engine)

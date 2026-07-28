@@ -65,6 +65,7 @@ def main():
     competitors = {
         "Ideon Technologies": "https://ideon.ai/category/news/", 
         "Exodigo": "https://www.exodigo.com/news" 
+        "GScan": "https://gscan.eu/"
     }
 
     db = SessionLocal()

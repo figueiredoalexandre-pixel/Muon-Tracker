@@ -45,15 +45,15 @@ def analyze_intelligence(text_content, competitor_name):
     )
 
     try:
-        # Call the model using the updated 2.5 flash version
+        # Call the model using the current production model ID
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-3.6-flash',
             contents=prompt
         )
         return response.text
         
     except Exception as e:
-        # Capture the exact error string instead of a generic message
+        # Capture the exact error string if anything else goes wrong
         return f"API ERROR DETAILS: {str(e)}"
 
 def main():

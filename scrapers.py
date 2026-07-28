@@ -53,8 +53,8 @@ def analyze_intelligence(text_content, competitor_name):
         return response.text
         
     except Exception as e:
-        print(f"Gemini API Error: {e}")
-        return "Analysis failed due to API error."
+        # Capture the exact error string instead of a generic message
+        return f"API ERROR DETAILS: {str(e)}"
 
 def main():
     """

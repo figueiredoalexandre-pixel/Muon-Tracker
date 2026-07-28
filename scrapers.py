@@ -61,9 +61,23 @@ def main():
     print("Initializing scraping sequence...")
     
     competitors = {
-        "Ideon Technologies": "https://ideon.ai/category/news/", 
-        "Exodigo": "https://www.exodigo.com/news",
-        "GScan": "https://gscan.eu/"
+        "Ideon Technologies": "https://ideon.ai/", 
+        "Outer Rim Exploration (ORE)": "https://outerrimexploration.com/",
+        "Muon Vision": "https://muon.vision/",
+        "Geoptic Infrastructure Investigations": "https://geoptic.co.uk/",
+        "Lingacom": "https://lingacom.com/",
+        "Beijing Cosmic / Cosmic Ray Technology": "https://bjcosmic.com/",
+        "Muon Solutions / MuonLab": "https://muonlab.com/",
+        "Muodim": "https://muodim.com/",
+        "Muon Systems": "https://muon.systems/",
+        "Ab Astra": "https://abastra.eu/",
+        "NanduX": "https://nandux.com/",
+        "Muotech": "https://muotech.io/",
+        "Decision Sciences International Corporation": "https://decisionsciences.com/",
+        "mDetect": "https://mdetect.com.au/",
+        "MuonX": "https://muonx.com/",
+        "GScan": "https://gscan.eu/",
+        "Lynkeos Technology": "https://lynkeos.co.uk/"
     }
 
     db = SessionLocal()
@@ -74,7 +88,7 @@ def main():
             
             raw_text = fetch_competitor_news(url)
             
-            if not raw_text or len(raw_text) < 50:
+            if not raw_text or len(raw_text) < 30:
                 print(f"Not enough new content found for {competitor}. Skipping.")
                 continue
                 

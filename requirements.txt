@@ -1,7 +1,7 @@
 streamlit
 pandas
 sqlalchemy
-anthropic
 requests
 beautifulsoup4
 python-dotenv
+google-generativeai

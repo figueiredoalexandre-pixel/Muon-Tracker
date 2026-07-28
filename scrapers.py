@@ -45,7 +45,6 @@ def analyze_intelligence(text_content, competitor_name):
     )
 
     try:
-        # Call the model using the current production model ID
         response = client.models.generate_content(
             model='gemini-3.6-flash',
             contents=prompt
@@ -53,7 +52,6 @@ def analyze_intelligence(text_content, competitor_name):
         return response.text
         
     except Exception as e:
-        # Capture the exact error string if anything else goes wrong
         return f"API ERROR DETAILS: {str(e)}"
 
 def main():
@@ -64,7 +62,7 @@ def main():
     
     competitors = {
         "Ideon Technologies": "https://ideon.ai/category/news/", 
-        "Exodigo": "https://www.exodigo.com/news" 
+        "Exodigo": "https://www.exodigo.com/news",
         "GScan": "https://gscan.eu/"
     }
 
@@ -84,7 +82,6 @@ def main():
             
             analysis_result = analyze_intelligence(raw_text, competitor)
             
-            # 3. Save or update the results in the database
             existing_event = db.query(ArticleEvent).filter(ArticleEvent.url == url).first()
             
             if existing_event:

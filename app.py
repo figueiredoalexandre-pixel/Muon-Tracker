@@ -3,7 +3,6 @@ import pandas as pd
 from database import SessionLocal, ArticleEvent, Base, engine
 
 # 1. Import your scraping function directly from the file
-# Note: This assumes your scraping logic is inside a function named 'main'
 from scrapers import main as run_scraper 
 
 st.set_page_config(page_title="Muon Solutions | Competitor Intel", layout="wide")
@@ -33,4 +32,18 @@ if not events:
     st.info("The database is currently empty. No competitor intelligence has been gathered yet.")
 else:
     df = pd.read_sql(session.query(ArticleEvent).statement, session.bind)
-    st.dataframe(df, use_container_width=True)
+    
+    # Display the main table overview
+    st.dataframe(df, width='stretch')
+    
+    st.markdown("---")
+    st.subheader("Intelligence Memorandums & Full Reports")
+    
+    # Create an interactive expander for each entry to read the full text easily
+    for index, row in df.iterrows():
+        with st.expander(f"📁 {row['competitor']} — {row['created_at']}"):
+            st.markdown(f"**Source URL:** {row['url']}")
+            st.markdown("---")
+            st.markdown(row['executive_summary'])
+
+session.close()

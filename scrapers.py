@@ -86,11 +86,11 @@ def main():
             
             analysis_result = analyze_intelligence(raw_text, competitor)
             
-            # 3. Save the results to the database
+          # 3. Save the results to the database
             new_event = ArticleEvent(
-                company=competitor,
-                source_url=url,
-                summary=analysis_result,
+                competitor=competitor,
+                url=url,
+                executive_summary=analysis_result,
             )
             
             db.add(new_event)

@@ -94,8 +94,8 @@ def main():
             analysis_result = analyze_intelligence(raw_text, competitor)
             
             # 3. Save the results to the database
-            new_event = ArticleEvent(
-                competitor_name=competitor,
+           new_event = ArticleEvent(
+                company=competitor, 
                 source_url=url,
                 summary=analysis_result,
                 # Adjust these field names if your database.py models differ slightly
